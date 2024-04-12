@@ -30,11 +30,11 @@ const SemiHeader = () => {
             <PiUserCircleLight size={20} color='#9BCF53'/>
             <CustomizeNavText navText={"Login / Register"} style={"font-[400] text-medium hover:text-[#9BCF53]  border-white cursor-pointer tracking-wider"}/>
         </div>
-        <div className='flex justify-center items-center w-fit h-fit gap-1'>
+        <div className='justify-center items-center w-fit h-fit gap-1 hidden md:flex'>
             <IoIosHelpCircleOutline size={20} color='#9BCF53'/>
             <CustomizeNavText navText={"FAQ"} style={"font-[400] text-medium hover:text-[#9BCF53]  border-white cursor-pointer tracking-wider"}/>
         </div>
-        <div className='flex justify-center items-center w-fit h-fit gap-1'>
+        <div className='justify-center items-center w-fit h-fit gap-1 hidden md:flex'>
             <RiMapPinTimeLine size={20} color='#9BCF53'/>
             <CustomizeNavText navText={"Order tracking"} style={"font-[400] text-medium hover:text-[#9BCF53] border-white hover:border-[#9BCF53] cursor-pointer tracking-wider"}/>
         </div>
