@@ -28,6 +28,9 @@ const userSchema = new mongoose.Schema({
     number:{
         type:String,
     },
+    isAdmin:{
+        type:Boolean,
+    }
 },{timestamps:true});
 
 const User = mongoose.model("User",userSchema);

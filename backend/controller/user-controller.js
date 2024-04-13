@@ -37,9 +37,8 @@ export const userRegister = async(req,res,next)=>{
         }
         const findUser = await User.findOne({email});
         if(findUser) return next(errorHandler(402,"user already existed"));
-        console.log(findUser)
         
-        const user = new User({email:email});
+        const user = new User({email:email,isAdmin:false});
         await user.save();
 
         res.clearCookie(COOKIE_NAME,{
@@ -80,7 +79,7 @@ export const userLogin = async(req,res,next)=>{
         const user = await User.findOne({email});
         if(!user) return next(errorHandler(402,"user not register please register"));
 
-        if(user.password === ""){
+        if(user.password === undefined){
             let cryptPassword = bcrypt.hashSync(password,10);
             await User.updateOne({password:cryptPassword});
         }else{
@@ -106,7 +105,7 @@ export const userLogin = async(req,res,next)=>{
             httpOnly:true,
             signed: true,
         });
-        res.status(200).json({message:"Ok",email:user.email});
+        res.status(200).json({message:"Ok",email:user.email,isAdmin:user.isAdmin});
     } catch (error) {
         next(error);
     }
@@ -117,7 +116,7 @@ export const verfyUser = async(req,res,next)=>{
         const user = await User.findById({_id:res.locals.jwtData.payload.id});
         if(!user) return next(errorHandler(402,"User not registered OR Token malfunctioned"));
         if (user._id.toString() !== res.locals.jwtData.payload.id) {
-            return next(errorHandler(403, "Incorrect Password"));
+            return next(errorHandler(403, "please login"));
         }
         return res.status(200).json({message:"ok",id:res.locals.jwtData.payload.id,email:user.email});
     } catch (error) {
@@ -141,7 +140,7 @@ export const userLogout = async(req,res,next)=>{
             path:"/"
         });
  
-        return res.status(200).json({message:"ok",email:user.email});
+        return res.status(200).json({message:"ok"});
     } catch (error) {
         next(error);
     }

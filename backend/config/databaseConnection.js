@@ -10,10 +10,10 @@ export const DataBaseConnection = async() => {
     }
 }
 
-export const DataBaseDisConnection = async() => {
-    try {
-        await disconnect();
-    } catch (error) {
-        console.log(error.message)
-    }
-}
+// export const DataBaseDisConnection = async() => {
+//     try {
+//         await disconnect();
+//     } catch (error) {
+//         console.log(error.message)
+//     }
+// }

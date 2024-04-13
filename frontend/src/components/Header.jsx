@@ -3,13 +3,16 @@ import Logo from './shared/Logo';
 import CustomizeNavText from './shared/CustomizeNavText';
 import { CiSearch } from "react-icons/ci";
 import { CiShoppingCart } from "react-icons/ci";
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   return (
     <div className='transition-transform h-[70px] md:h-[100px] w-full flex justify-between items-center px-6 md:px-10 py-1 bg-white shadow-lg shadow-[#1717170a] sticky top-0 left-0 z-50'>
         <Logo/>
         <nav className=' hidden lg:flex gap-4 justify-center items-center'>
-            <CustomizeNavText navText={"Home"} style={"font-[400] mx-4 text-medium hover:text-[#9BCF53] border-b-[1px] border-white hover:border-b-[1px] hover:border-[#9BCF53] cursor-pointer tracking-wider"} />
+            <Link to="/">
+                <CustomizeNavText navText={"Home"} style={"font-[400] mx-4 text-medium hover:text-[#9BCF53] border-b-[1px] border-white hover:border-b-[1px] hover:border-[#9BCF53] cursor-pointer tracking-wider"} />
+            </Link>
             <CustomizeNavText navText={"catalogue"} style={"font-[400] mx-4 text-medium hover:text-[#9BCF53] border-b-[1px] border-white hover:border-b-[1px] hover:border-[#9BCF53] cursor-pointer tracking-wider"} />
             <CustomizeNavText navText={"about"} style={"font-[400] mx-4 text-medium hover:text-[#9BCF53] border-b-[1px] border-white hover:border-b-[1px] hover:border-[#9BCF53] cursor-pointer tracking-wider"} />
             <CustomizeNavText navText={"more"} style={"font-[400] mx-4 text-medium hover:text-[#9BCF53] border-b-[1px] border-white hover:border-b-[1px] hover:border-[#9BCF53] cursor-pointer tracking-wider"} />
