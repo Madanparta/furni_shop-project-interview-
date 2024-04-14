@@ -17,10 +17,17 @@ export const loginApi = async(email,password)=>{
     const data = res?.data;
     return data;
 }
+export const logoutApi = async()=>{
+    const res = await axios.get('/user/logout');
+    if(res.status !== 200){
+        throw new Error('Unable to Log')
+    };
+    const data = res?.data;
+    return data;
+}
 
 export const veryUserApi = async()=>{
     const res = await axios.get('/user/very-user');
-    console.log(res.status)
     if(res.status !== 200 ){
         throw new Error('Unable to Log')
     };
@@ -31,7 +38,6 @@ export const veryUserApi = async()=>{
 // products..
 export const getHeroScrollApi = async()=>{
     const res = await axios.get('/product/hero-scroll');
-    console.log(res.status)
     if(res.status !== 200 ){
         throw new Error('Unable to getHeroScroll')
     };
@@ -40,7 +46,6 @@ export const getHeroScrollApi = async()=>{
 };
 export const getHeroPremiApi = async()=>{
     const res = await axios.get('/product/hero-prem');
-    console.log(res.status)
     if(res.status !== 200 ){
         throw new Error('Unable to getHeroScroll')
     };
@@ -49,7 +54,6 @@ export const getHeroPremiApi = async()=>{
 };
 export const getHeroOfferApi = async()=>{
     const res = await axios.get('/product/hero-offer');
-    console.log(res.status)
     if(res.status !== 200 ){
         throw new Error('Unable to getHeroScroll')
     };
@@ -60,9 +64,24 @@ export const getHeroOfferApi = async()=>{
 // get products.
 export const getAllProductApi = async()=>{
     const res = await axios.get('/product/getAll');
-    console.log(res.status)
     if(res.status !== 200 ){
         throw new Error('Unable to getProducts')
+    };
+    const data = res?.data;
+    return data;
+};
+export const getProductApi = async(id)=>{
+    const res = await axios.get(`/product/${id}`);
+    if(res.status !== 200 ){
+        throw new Error('Unable to getProducts')
+    };
+    const data = res?.data;
+    return data;
+};
+export const productSearchApi = async(query)=>{
+    const res = await axios.post('/product/search',{query});
+    if(res.status !== 200 ){
+        throw new Error('Unable to searching')
     };
     const data = res?.data;
     return data;

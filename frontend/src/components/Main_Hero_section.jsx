@@ -16,7 +16,7 @@ function Main_Hero_section() {
       textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
     };
 
-    
+    // console.log(auth?.heroScroll)
   return (
     <div className='w-full h-full lg:h-[70vh] flex flex-col lg:flex-row'>
         {/* hero sliding */}
@@ -24,7 +24,7 @@ function Main_Hero_section() {
         <Slider {...settings} className='w-[100%] h-full overflow-hidden'>
             {
                 auth?.heroScroll && auth?.heroScroll.map((hero)=>{
-                    return <div className='w-full h-full relative'>
+                    return <div key={hero._id} className='w-full h-full relative'>
                         <img className='w-full h-full bg-cover ' src={'http://localhost:8080/'+hero?.image} alt=''/>
                         <div style={{fontFamily:"Noto Sans"}} className='absolute top-1/2 left-10 lg:top-1/3 lg:left-20 max-w-4xl h-fit'>
                             <h2 style={shadowStyle} className=' text-2xl md:text-3xl lg:text-5xl tracking-wide mb-3 font-extrabold text-white'>{hero?.title}</h2>

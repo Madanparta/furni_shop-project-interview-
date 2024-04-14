@@ -31,15 +31,15 @@ export const heroSectionScroll = async(req,res,next)=>{
 
 export const getHeroSectionScroll = async(req,res,next)=>{
     try {
-        const user = await User.findById({ _id: res.locals.jwtData.payload.id });
-        if (!user)
-            return next(
-                errorHandler(402, "User not registered OR Token malfunctioned")
-        );
+        // const user = await User.findById({ _id: res.locals.jwtData.payload.id });
+        // if (!user)
+        //     return next(
+        //         errorHandler(402, "User not registered OR Token malfunctioned")
+        // );
 
-        if (user._id.toString() !== res.locals.jwtData.payload.id) {
-            return next(errorHandler(403, "Incorrect Password"));
-        }
+        // if (user._id.toString() !== res.locals.jwtData.payload.id) {
+        //     return next(errorHandler(403, "Incorrect Password"));
+        // }
         const heroScreen = await HeroScreen.find({});
         res.status(200).json({ message: 'ok',heroScreen });
     } catch (error) {
@@ -75,15 +75,15 @@ export const heroSectionScrollPremi = async(req,res,next)=>{
 }
 export const getheroSectionScrollPremi = async(req,res,next)=>{
     try {
-        const user = await User.findById({ _id: res.locals.jwtData.payload.id });
-        if (!user)
-            return next(
-                errorHandler(402, "User not registered OR Token malfunctioned")
-        );
+        // const user = await User.findById({ _id: res.locals.jwtData.payload.id });
+        // if (!user)
+        //     return next(
+        //         errorHandler(402, "User not registered OR Token malfunctioned")
+        // );
 
-        if (user._id.toString() !== res.locals.jwtData.payload.id) {
-            return next(errorHandler(403, "Incorrect Password"));
-        }
+        // if (user._id.toString() !== res.locals.jwtData.payload.id) {
+        //     return next(errorHandler(403, "Incorrect Password"));
+        // }
         const homePremi = await HeroScreenPrem.find();
         
         res.status(200).json({ message: 'ok',homePremi });
@@ -120,15 +120,15 @@ export const heroSectionScrollOffer = async(req,res,next)=>{
 }
 export const getheroSectionScrollOffer = async(req,res,next)=>{
     try {
-        const user = await User.findById({ _id: res.locals.jwtData.payload.id });
-        if (!user)
-            return next(
-                errorHandler(402, "User not registered OR Token malfunctioned")
-        );
+        // const user = await User.findById({ _id: res.locals.jwtData.payload.id });
+        // if (!user)
+        //     return next(
+        //         errorHandler(402, "User not registered OR Token malfunctioned")
+        // );
 
-        if (user._id.toString() !== res.locals.jwtData.payload.id) {
-            return next(errorHandler(403, "Incorrect Password"));
-        }
+        // if (user._id.toString() !== res.locals.jwtData.payload.id) {
+        //     return next(errorHandler(403, "Incorrect Password"));
+        // }
         
         const heroOffer = await HeroScreenOffer.find()
         res.status(200).json({ message: 'ok',heroOffer });
@@ -170,6 +170,25 @@ export const uploadProduct = async(req,res,next)=>{
 }
 export const getAllProduct = async(req,res,next)=>{
     try {
+        // const user = await User.findById({ _id: res.locals.jwtData.payload.id });
+        // if (!user)
+        //     return next(
+        //         errorHandler(402, "User not registered OR Token malfunctioned")
+        // );
+
+        // if (user._id.toString() !== res.locals.jwtData.payload.id) {
+        //     return next(errorHandler(403, "Incorrect Password"));
+        // }
+        const products = await Proudct.find();
+        res.status(200).json({ message: 'ok',products });
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const getProduct = async(req,res,next)=>{
+    try {
+        const {id} = req.params;
         const user = await User.findById({ _id: res.locals.jwtData.payload.id });
         if (!user)
             return next(
@@ -178,9 +197,30 @@ export const getAllProduct = async(req,res,next)=>{
 
         if (user._id.toString() !== res.locals.jwtData.payload.id) {
             return next(errorHandler(403, "Incorrect Password"));
-        }
-        const products = await Proudct.find();
-        res.status(200).json({ message: 'ok',products });
+        };
+        
+        const product = await Proudct.find({_id:id});
+        res.status(200).json({ message: 'ok',product });
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const searchProducts = async(req,res,next)=>{
+    try {
+        const query = req.body.query.toLowerCase()
+        const user = await User.findById({ _id: res.locals.jwtData.payload.id });
+        if (!user)
+            return next(
+                errorHandler(402, "User not registered OR Token malfunctioned")
+        );
+
+        if (user._id.toString() !== res.locals.jwtData.payload.id) {
+            return next(errorHandler(403, "Incorrect Password"));
+        };
+        
+        const product = await Proudct.find({product_name:{ $regex: query,$options: 'i'}});
+        res.status(200).json({ message: 'ok',product });
     } catch (error) {
         next(error);
     }

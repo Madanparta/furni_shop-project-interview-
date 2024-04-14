@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
-import { getAllProductApi, getHeroOfferApi, getHeroPremiApi, getHeroScrollApi, loginApi, signupApi, veryUserApi } from '../helper/api-manager';
+import { getAllProductApi, getHeroOfferApi, getHeroPremiApi, getHeroScrollApi, loginApi, logoutApi, productSearchApi, signupApi, veryUserApi } from '../helper/api-manager';
 
 const AuthContext = createContext();
 
@@ -11,6 +11,10 @@ export const AuthProvider = ({children}) => {
     const [heroOffer,setHeroOffer]=useState(null);
 
     const [products,setProducts]=useState(null);
+    const [searchQuery,setSearchQuery]=useState('');
+    const [queryLength,setQueryLength]=useState(0);
+
+    const [cart,setCart]=useState('');
 
     const signupUser =async(email)=>{
         try {
@@ -34,6 +38,30 @@ export const AuthProvider = ({children}) => {
         } catch (error) {
             toast.error("login Error",{id:"login"})
             console.log('Login Error ', error);
+        }
+    }
+    const logoutUser =async(email,password)=>{
+        try {
+            const data = await logoutApi(email,password);
+            if(data){
+                toast.success("succesfully logout",{id:"logout"})
+                window.location.assign('/shop/my-account');
+            }
+        } catch (error) {
+            toast.error("logout Error",{id:"logout"})
+            console.log('logout Error ', error);
+        }
+    }
+    const searchQueries =async(query)=>{
+        try {
+            const data = await productSearchApi(query);
+            if(data){
+                setSearchQuery(data?.product);
+                toast.success("get result",{id:"query"})
+            }
+        } catch (error) {
+            toast.error("query Error",{id:"query"})
+            console.log('query Error ', error);
         }
     }
 
@@ -111,14 +139,34 @@ export const AuthProvider = ({children}) => {
         verfyUser();
     },[]);
 
+    // locatl storge..
+    // useEffect(() => {
+    //   const storedCart = JSON.parse(localStorage.getItem("cart") || []);
+    //   setCart(storedCart);
+    // }, []);
+
+    // useEffect(()=>{
+    //     window.localStorage.setItem('cart',JSON.stringify(cart));
+    // },[cart]);
+
+    // const addToCart = (product) => {
+    //   setCart([...cart, product]);
+    // };
+
     const value ={
         user,
         signupUser,
         loginUser,
+        logoutUser,
         heroScroll,
         heroPremi,
         heroOffer,
         products,
+        searchQueries,
+        searchQuery,
+        queryLength,setQueryLength,
+        // cart,setCart
+        // addToCart
     }
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

@@ -6,10 +6,13 @@ import { GiReturnArrow } from "react-icons/gi";
 import { PiHeadphonesLight } from "react-icons/pi";
 import { FaTruckMoving } from "react-icons/fa6";
 import NewSection_home from '../components/NewSection_home';
+import { useAuth } from '../context/AuthContext';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
+  const auth = useAuth();
   return (
-    <div className='w-full h-full'>
+    <div className='w-full h-full relative'>
       <Main_Hero_section/>
       <div className='w-full h-[110px] py-6 border-b-[1px] border-[#a8a8a8d7]'>
         <div className='h-full w-full lg:w-[1600px] m-auto px-10 lg:px-2 flex flex-row items-center justify-between gap-2'>
@@ -31,6 +34,18 @@ const Home = () => {
         {/* <div className='w-full h-full flex justify-center items-center flex-col px-6 mx-14'>
          
         </div> */}
+        {auth?.queryLength > 0 && <div className=' w-full absolute top-0 left-0 bg-[#cccccc59] h-fit p-10 shadow-2xl'>
+          <div className=' p-2 flex gap-4 justify-center items-center overflow-hidden'>
+            {
+              auth?.searchQuery && auth?.searchQuery.map((search)=>{
+                return <Link to={`/product/${search._id}`} key={search._id}><div className='w-32 h-32 rounded-full p-2 overflow-hidden relative flex justify-center items-center cursor-pointer hover:border-2' >
+                  <img className='w-full h-full scale-125' src={"http://localhost:8080/"+search?.product_images[0]?.filename}/>
+                  <h3 className='absolute top-5 left-5 text-lg text-white'>{search?.product_name}</h3>
+                </div></Link>
+              })
+            }
+          </div>
+        </div>}
       </div>
     </div>
   )
