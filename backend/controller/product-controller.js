@@ -1,5 +1,5 @@
 import { errorHandler } from "../config/errorHandler.js";
-import {HeroScreen,HeroScreenOffer,HeroScreenPrem} from "../model/product-modal.js"
+import {HeroScreen,HeroScreenOffer,HeroScreenPrem, Proudct} from "../model/product-modal.js"
 import User from "../model/user-model.js";
 
 export const heroSectionScroll = async(req,res,next)=>{
@@ -132,6 +132,55 @@ export const getheroSectionScrollOffer = async(req,res,next)=>{
         
         const heroOffer = await HeroScreenOffer.find()
         res.status(200).json({ message: 'ok',heroOffer });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+
+// products..
+export const uploadProduct = async(req,res,next)=>{
+    try {
+        const {product_code,product_name,product_rating,product_price,product_description} = req.body;
+        const product_images = req.files;
+        const user = await User.findById({ _id: res.locals.jwtData.payload.id });
+        if (!user)
+            return next(
+                errorHandler(402, "User not registered OR Token malfunctioned")
+        );
+
+        if (user._id.toString() !== res.locals.jwtData.payload.id) {
+            return next(errorHandler(403, "Incorrect Password"));
+        }
+        const newProduct = new Proudct({
+            product_code,
+            product_name,
+            product_rating,
+            product_price,
+            product_description,
+            product_images
+        });
+
+        await newProduct.save();
+        res.status(200).json({ message: 'successfully uploaded' });
+    } catch (error) {
+        next(error);
+    }
+}
+export const getAllProduct = async(req,res,next)=>{
+    try {
+        const user = await User.findById({ _id: res.locals.jwtData.payload.id });
+        if (!user)
+            return next(
+                errorHandler(402, "User not registered OR Token malfunctioned")
+        );
+
+        if (user._id.toString() !== res.locals.jwtData.payload.id) {
+            return next(errorHandler(403, "Incorrect Password"));
+        }
+        const products = await Proudct.find();
+        res.status(200).json({ message: 'ok',products });
     } catch (error) {
         next(error);
     }

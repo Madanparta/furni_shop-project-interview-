@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { createContext,useContext } from 'react';
 const AuthContext = createContext();
 import toast from "react-hot-toast";
-import { adminLoginApi, adminLogoutApi, heroSectionApi, heroSectionOfferApi, heroSectionPremApi } from '../helper/Api-manger';
+import { adminLoginApi, adminLogoutApi, heroSectionApi, heroSectionOfferApi, heroSectionPremApi, uploadsProductApi } from '../helper/Api-manger';
 
 export const AuthProvider = ({children}) => {
     const [user,setUser]=useState(null);
@@ -85,6 +85,20 @@ export const AuthProvider = ({children}) => {
         }
     }
 
+    // products//
+    const uploadProduct = async(formData)=>{
+        try {
+            const data = await uploadsProductApi(formData)
+            if(data){
+                console.log(data);
+                toast.success("upload success",{id:"ProductUpload"});
+            }
+        } catch (error) {
+            toast.error("ProductUpload error",{id:"ProductUpload"});
+            console.log("ProductUpload error ",error)
+        }
+    }
+
     const value ={
         user,
         adminLogin,
@@ -94,6 +108,7 @@ export const AuthProvider = ({children}) => {
         heroSectionScrollApi,
         heroSectionPrem,
         heroSectionOffer,
+        uploadProduct,
     }
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

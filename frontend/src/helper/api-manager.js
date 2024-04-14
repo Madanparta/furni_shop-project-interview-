@@ -56,3 +56,14 @@ export const getHeroOfferApi = async()=>{
     const data = res?.data;
     return data;
 };
+
+// get products.
+export const getAllProductApi = async()=>{
+    const res = await axios.get('/product/getAll');
+    console.log(res.status)
+    if(res.status !== 200 ){
+        throw new Error('Unable to getProducts')
+    };
+    const data = res?.data;
+    return data;
+};

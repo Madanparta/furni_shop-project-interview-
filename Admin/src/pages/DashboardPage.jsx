@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 const DashboardPage = () => {
     const auth = useAuth()
     const [heroSection,setHeroSection]=useState(false);
+    const [productSection,setProductSection]=useState(false);
 
     // main hero section scroll
     const [heroImage,setHeroImage]=useState("");
@@ -23,6 +24,14 @@ const DashboardPage = () => {
     const [offerImage,setOfferImage]=useState("");
     const [offerTitle,setOfferTitle]=useState('')
     const [offerDiscription,setOfferDescription]=useState("");
+
+    // product..
+    const [product_code,setProduct_code]=useState('')
+    const [product_name,setProduct_name]=useState('')
+    const [product_rating,setProduct_rating]=useState('')
+    const [product_price,setProduct_price]=useState('')
+    const [product_description,setProduct_description]=useState('')
+    const [images,setImages]=useState([]);
 
 
     // const GetUrl = async(heroImage)=>{
@@ -74,6 +83,30 @@ const DashboardPage = () => {
 
         toast.loading("loading",{id:"heroOffer"});
         await auth?.heroSectionOffer(formData);
+    };
+
+    // product uploads.
+    const handleProductUpload = async(e)=>{
+        e.preventDefault();
+
+        const formData = new FormData();
+        formData.append('product_code',product_code)
+        formData.append('product_name',product_name)
+        formData.append('product_rating',product_rating)
+        formData.append('product_price',product_price)
+        formData.append('product_description',product_description);
+        Array.from(images).forEach(item=>{
+            formData.append('products',item);
+        });
+
+        toast.loading("uploading",{id:"ProductUpload"});
+        await auth?.uploadProduct(formData);
+
+        setProduct_code('')
+        setProduct_name('')
+        setProduct_rating('')
+        setProduct_price('')
+        setProduct_description('')
     }
 
   return (
@@ -85,7 +118,7 @@ const DashboardPage = () => {
         <div className='w-full h-full text-gray-500 py-2 px-2 flex flex-col gap-4'>
             <h4 className='text-lg tracking-wide font-bold'>Hero section uploads</h4>
             
-            <ul className="space-y-2 font-medium">
+            <ul className="space-y-2 font-medium flex flex-col gap-5">
                 <li className='w-full h-full'>
                     <h3 onClick={()=>setHeroSection(!heroSection)} className='flex gap-2 justify-start items-center w-fit h-fit px-2 py-2 cursor-pointer'>Hero section scroll uploads {!heroSection? <IoIosArrowDown size={22}/> : <IoIosArrowUp size={22}/>} </h3>
                     
@@ -195,6 +228,48 @@ const DashboardPage = () => {
                             </div>
                             <button className='w-fit h-fit px-2 py-1 rounded bg-green-300 text-sm text-[#171717]' type='submit'>Upload</button>
                         </form>
+                        </div>}
+                    </div>
+                </li>
+                <li className='w-full h-full'>
+                    <h3 onClick={()=>setProductSection(!productSection)} className='flex gap-2 justify-start items-center w-fit h-fit px-2 py-2 cursor-pointer'>Upload Product & Details {!productSection? <IoIosArrowDown size={22}/> : <IoIosArrowUp size={22}/>} </h3>
+
+                    <div className='w-full h-full flex flex-col lg:flex-row gap-10'>
+                        {productSection && <div className='w-full md:w-[600px] h-fit px-2 py-2 bg-gray-50 shadow'>
+                            <div className='w-full h-full'>
+                                <div className='text-base flex flex-col gap-3'>
+                                    <p className='text-sm text-gray-300'>Upload Product details..</p>
+
+                                    <form onSubmit={handleProductUpload} className='text-sm text-[#171717]'>
+                                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="product_images">Select images upto MAX 04</label>
+                                        <input multiple onChange={(e)=>setImages(e.target.files)} accept="image/*" className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="product_images" type="file" />
+
+                                        <div className=' px-4 pl-5 py-2 capitalize flex flex-col gap-3 w-full h-full'>
+                                            <label htmlFor="product_code">
+                                                Product code : <input name='product_code' value={product_code} onChange={(e)=>setProduct_code(e.target.value)} id='product_code' type='text' className='w-full h-8 px-2 py-2 outline-none' />
+                                            </label>
+
+                                            <label htmlFor="product_name">
+                                                Product Name : <input name='product_name' value={product_name} onChange={(e)=>setProduct_name(e.target.value)} id='product_name' type='text' className='w-full h-8 px-2 py-2 outline-none' />
+                                            </label>
+
+                                            <label htmlFor="prdouct_rating">
+                                                Product Rating : <input name='product_rating' value={product_rating} onChange={(e)=>setProduct_rating(e.target.value)} id='prdouct_rating' type='number' className='w-full h-8 px-2 py-2 outline-none' />
+                                            </label>
+
+                                            <label htmlFor="product_prices">
+                                                Product Price : <input name='product_price' value={product_price} onChange={(e)=>setProduct_price(e.target.value)} id='product_prices' type='number' className='w-full h-8 px-2 py-2 outline-none' />
+                                            </label>
+
+                                            <label htmlFor="product_desc">
+                                                Product Discription : <input name='product_description' value={product_description} onChange={(e)=>setProduct_description(e.target.value)} id='product_desc' type='type' className='w-full h-8 px-2 py-2 outline-none' />
+                                            </label>
+                                        </div>
+                                        <button className='w-fit h-fit px-2 py-1 rounded bg-green-300 text-sm text-[#171717]' type='submit'>Upload</button>
+                                    </form>
+
+                                </div>
+                            </div>
                         </div>}
                     </div>
                 </li>

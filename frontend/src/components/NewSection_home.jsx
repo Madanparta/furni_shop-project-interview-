@@ -2,9 +2,11 @@ import React from 'react'
 import CustomProduct from './shared/CustomProduct';
 import { home_newCategory } from '../data'; 
 import Slider from "react-slick";
+import { useAuth } from '../context/AuthContext';
 
 
 const NewSection_home = () => {
+  const auth = useAuth()
     var settings = {
       dots: true,
       infinite: true,
@@ -14,16 +16,17 @@ const NewSection_home = () => {
       autoplaySpeed: 4000,
       pauseOnHover: true,
     };
+
+    console.log(auth?.products);
   return (
     <div className='w-full h-full px-10 overflow-hidden'>
-        <Slider {...settings} className='flex gap-6'>
+        <Slider {...settings} >
             {
-                home_newCategory.map((newPro)=>{
-                    return <CustomProduct image={newPro.image} name={newPro.product_name} price={newPro.price}/>
+                auth?.products && auth?.products.map((newPro)=>{
+                    return <CustomProduct image={'http://localhost:8080/'+newPro?.product_images[0]?.filename} name={newPro?.product_name} price={newPro?.product_price}/>
                 })
             }
         </Slider>
-        {/* </Slider> */}
     </div>
   )
 }

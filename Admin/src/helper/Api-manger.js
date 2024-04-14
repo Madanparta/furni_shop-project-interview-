@@ -43,3 +43,13 @@ export const heroSectionOfferApi = async(formData)=>{
     const data = res.data;
     return data;
 }
+
+// products
+export const uploadsProductApi = async(formData)=>{
+    const res = await axios.post('/product/upload',formData);
+    if(res.status !== 200){
+        throw new Error("Unble to upload product.");
+    };
+    const data = res.data;
+    return data;
+}

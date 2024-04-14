@@ -24,4 +24,16 @@ const heroScreenOfferSchema = new mongoose.Schema({
 
 const HeroScreenOffer = mongoose.model("HeroScreenOffer",heroScreenOfferSchema);
 
-export { HeroScreen, HeroScreenPrem,HeroScreenOffer }
+// products schema;
+const productSchema = new mongoose.Schema({
+    product_code : String,
+    product_name : String,
+    product_rating : String,
+    product_price : String,
+    product_description:String,
+    product_images : {type:Array},
+},{timestamps:true});
+
+const Proudct = mongoose.model("Proudct",productSchema)
+
+export { HeroScreen, HeroScreenPrem,HeroScreenOffer,Proudct }

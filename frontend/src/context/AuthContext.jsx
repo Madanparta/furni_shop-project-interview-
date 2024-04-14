@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
-import { getHeroOfferApi, getHeroPremiApi, getHeroScrollApi, loginApi, signupApi, veryUserApi } from '../helper/api-manager';
+import { getAllProductApi, getHeroOfferApi, getHeroPremiApi, getHeroScrollApi, loginApi, signupApi, veryUserApi } from '../helper/api-manager';
 
 const AuthContext = createContext();
 
@@ -9,6 +9,8 @@ export const AuthProvider = ({children}) => {
     const [heroScroll,setHeroScoll]=useState(null);
     const [heroPremi,setHeroPremi]=useState(null);
     const [heroOffer,setHeroOffer]=useState(null);
+
+    const [products,setProducts]=useState(null);
 
     const signupUser =async(email)=>{
         try {
@@ -79,6 +81,22 @@ export const AuthProvider = ({children}) => {
         getHeroOffer();
     },[]);
 
+    // get all products
+    useEffect(()=>{
+        const getAllProducts =async()=>{
+            try {
+                const data = await getAllProductApi();
+                if(data){
+                    setProducts(data?.products);
+                }
+            } catch (error) {
+                toast.error("getHeroOffer Error",{id:"getHeroOffer"})
+                console.log('getHeroOffer Error ', error);
+            }
+        }
+        getAllProducts();
+    },[]);
+
     useEffect(()=>{
         async function verfyUser(){
             try {
@@ -99,7 +117,8 @@ export const AuthProvider = ({children}) => {
         loginUser,
         heroScroll,
         heroPremi,
-        heroOffer
+        heroOffer,
+        products,
     }
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
