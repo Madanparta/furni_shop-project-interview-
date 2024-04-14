@@ -14,8 +14,6 @@ export const AuthProvider = ({children}) => {
     const [searchQuery,setSearchQuery]=useState('');
     const [queryLength,setQueryLength]=useState(0);
 
-    const [cart,setCart]=useState('');
-
     const signupUser =async(email)=>{
         try {
             const data = await signupApi(email)
@@ -139,20 +137,6 @@ export const AuthProvider = ({children}) => {
         verfyUser();
     },[]);
 
-    // locatl storge..
-    // useEffect(() => {
-    //   const storedCart = JSON.parse(localStorage.getItem("cart") || []);
-    //   setCart(storedCart);
-    // }, []);
-
-    // useEffect(()=>{
-    //     window.localStorage.setItem('cart',JSON.stringify(cart));
-    // },[cart]);
-
-    // const addToCart = (product) => {
-    //   setCart([...cart, product]);
-    // };
-
     const value ={
         user,
         signupUser,
@@ -165,8 +149,6 @@ export const AuthProvider = ({children}) => {
         searchQueries,
         searchQuery,
         queryLength,setQueryLength,
-        // cart,setCart
-        // addToCart
     }
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

@@ -3,10 +3,12 @@ import { useState } from 'react';
 import { createContext,useContext } from 'react';
 const AuthContext = createContext();
 import toast from "react-hot-toast";
-import { adminLoginApi, adminLogoutApi, heroSectionApi, heroSectionOfferApi, heroSectionPremApi, uploadsProductApi } from '../helper/Api-manger';
+import { adminLoginApi, adminLogoutApi, deleteProductApi, getAllProductApi, heroSectionApi, heroSectionOfferApi, heroSectionPremApi, uploadsProductApi } from '../helper/Api-manger';
+import { useEffect } from 'react';
 
 export const AuthProvider = ({children}) => {
     const [user,setUser]=useState(null);
+    const [products,setProduct]=useState(null);
 
     const adminLogin = async(email,password)=>{
         try {
@@ -84,6 +86,18 @@ export const AuthProvider = ({children}) => {
             console.log("heroOffer error ",error)
         }
     }
+    const deleteProduct = async(id)=>{
+        try {
+            const data = await deleteProductApi(id)
+            if(data){
+                console.log(data);
+                toast.success("delete success",{id:"product_dlt"});
+            }
+        } catch (error) {
+            toast.error("delete error",{id:"product_dlt"});
+            console.log("delete error ",error)
+        }
+    }
 
     // products//
     const uploadProduct = async(formData)=>{
@@ -97,7 +111,23 @@ export const AuthProvider = ({children}) => {
             toast.error("ProductUpload error",{id:"ProductUpload"});
             console.log("ProductUpload error ",error)
         }
-    }
+    };
+
+    useEffect(()=>{
+        async function getAllProduct(){
+            try {
+                const data = await getAllProductApi();
+                if(data){
+                    setProduct(data?.products)
+                }
+            } catch (error) {
+                toast.error("product not get",{id:"getAllproduct"})
+                console.log("product not get")
+            }
+        }
+
+        getAllProduct();
+    },[]);
 
     const value ={
         user,
@@ -109,6 +139,9 @@ export const AuthProvider = ({children}) => {
         heroSectionPrem,
         heroSectionOffer,
         uploadProduct,
+
+        products,
+        deleteProduct,
     }
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

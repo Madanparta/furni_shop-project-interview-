@@ -225,3 +225,23 @@ export const searchProducts = async(req,res,next)=>{
         next(error);
     }
 }
+export const deleteProduct = async(req,res,next)=>{
+    try {
+        // console.log(req.params.id)
+        const user = await User.findById({ _id: res.locals.jwtData.payload.id });
+        if (!user)
+            return next(
+                errorHandler(402, "User not registered OR Token malfunctioned")
+        );
+
+        if (user._id.toString() !== res.locals.jwtData.payload.id) {
+            return next(errorHandler(403, "Incorrect Password"));
+        };
+
+        await Proudct.findByIdAndDelete({_id:req.params.id});
+
+        res.status(200).json({ message: 'product delted' });
+    } catch (error) {
+        next(error);
+    }
+}

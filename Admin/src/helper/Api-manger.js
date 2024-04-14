@@ -53,3 +53,19 @@ export const uploadsProductApi = async(formData)=>{
     const data = res.data;
     return data;
 }
+export const getAllProductApi = async()=>{
+    const res = await axios.get('/product/getAll');
+    if(res.status !== 200){
+        throw new Error("Unble to get product.");
+    };
+    const data = res.data;
+    return data;
+}
+export const deleteProductApi = async(id)=>{
+    const res = await axios.post(`/product/delte/${id}`);
+    if(res.status !== 200){
+        throw new Error("Unble to get product.");
+    };
+    const data = res.data;
+    return data;
+}

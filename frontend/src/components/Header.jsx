@@ -6,10 +6,12 @@ import { CiShoppingCart } from "react-icons/ci";
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
+import { useCart } from '../context/CartContext';
 
 const Header = () => {
     const [queries,setQueries]=useState('');
     const auth = useAuth()
+    const carts = useCart()
     
     useEffect(()=>{
         async function querySearch(queries){
@@ -20,7 +22,7 @@ const Header = () => {
         queries && querySearch(queries)
         auth?.setQueryLength(queries.length)
     },[queries]);
-    // console.log(queries.length)
+    // console.log(carts?.cart);
   return (
     <div className='transition-transform h-[70px] md:h-[100px] w-full flex justify-between items-center px-6 md:px-10 py-1 bg-white shadow-lg shadow-[#1717170a] sticky top-0 left-0 z-50'>
         <Logo/>
@@ -40,9 +42,9 @@ const Header = () => {
             <div className='relative w-fit h-fit text-center'>
                 <CiShoppingCart size={33} color='#171717'/>
                 {/* prices */}
-                <p className='text-sm w-10 font-thin tracking-wide'>$150</p>
+                <p className='text-sm w-10 font-thin tracking-wide'>$ {carts?.cart[0]?.product?.product_price * carts?.cart[0]?.count || 0}</p>
                 {/* count span */}
-                <p className=' rounded-full bg-[#9BCF53] text-white font-bold absolute top-0 right-0 w-4 h-4 flex justify-center items-center p-1 text-[10px]'>1</p>
+                <p className=' rounded-full bg-[#9BCF53] text-white font-bold absolute top-0 right-0 w-4 h-4 flex justify-center items-center p-1 text-[10px]'>{carts?.cart ? carts?.cart.length : 0}</p>
             </div>
         </div>
     </div>

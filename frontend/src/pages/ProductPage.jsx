@@ -4,6 +4,7 @@ import { getProductApi } from '../helper/api-manager'
 import toast from 'react-hot-toast';
 import { FaStar } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
+import { useCart } from '../context/CartContext';
 
 const ProductPage = () => {
   const {id} = useParams();
@@ -12,6 +13,7 @@ const ProductPage = () => {
   const [count, setCount] = useState(1);
 
   const auth = useAuth()
+  const carts = useCart();
 
   useEffect(()=>{
     async function getProduct(id){
@@ -38,9 +40,8 @@ const ProductPage = () => {
   };
 
   const addToCart = () => {
-    auth?.addToCart({product,count})
-  };
-  // console.log(auth?.cart)
+    carts?.addToCart({product,count})
+  }
   return (
     <div style={{fontFamily:"Noto Sans"}} className='w-full h-full'>
         <div className='w-full lg:w-[1600px] m-auto py-5 px-2'>

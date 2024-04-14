@@ -1,6 +1,6 @@
 import express from "express";
 import { verfyToken } from "../config/token-manager.js";
-import { getAllProduct, getHeroSectionScroll, getProduct, getheroSectionScrollOffer, getheroSectionScrollPremi, heroSectionScroll, heroSectionScrollOffer, heroSectionScrollPremi, searchProducts, uploadProduct } from "../controller/product-controller.js";
+import { deleteProduct, getAllProduct, getHeroSectionScroll, getProduct, getheroSectionScrollOffer, getheroSectionScrollPremi, heroSectionScroll, heroSectionScrollOffer, heroSectionScrollPremi, searchProducts, uploadProduct } from "../controller/product-controller.js";
 const productRoute = express.Router();
 import multer from "multer";
 import path from "path";
@@ -33,5 +33,7 @@ productRoute.get('/getAll',getAllProduct);
 productRoute.get('/:id',verfyToken,getProduct);
 
 productRoute.post('/search',verfyToken,searchProducts);
+
+productRoute.post('/delte/:id',verfyToken,deleteProduct);
 
 export default productRoute;
